@@ -267,7 +267,7 @@
   /* ===== PERBAIKAN KHUSUS MOBILE UNTUK PROJECTS ===== */
   .projects-grid { 
     display: grid; 
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
     gap: 2rem; 
   }
   .project-card { 
@@ -277,6 +277,8 @@
     transition: all 0.4s; 
     display: flex; 
     flex-direction: column; 
+    opacity: 1;
+    visibility: visible;
   }
   .project-card:hover { 
     transform: translateY(-8px); 
@@ -410,7 +412,15 @@
     .modal-title { font-size: 1.5rem; } 
     .modal-hero { height: 220px; } 
     .carousel-slide { height: 260px; }
-    .projects-grid { grid-template-columns: 1fr !important; }
+    .projects-grid { 
+      grid-template-columns: 1fr !important; 
+      gap: 1.5rem !important;
+    }
+    .project-card {
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: flex !important;
+    }
     .software-grid { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
   }
   
@@ -423,10 +433,20 @@
     .modal-body { padding: 1.2rem; } 
     .modal-title { font-size: 1.3rem; } 
     .component-list { grid-template-columns: 1fr; }
-    .projects-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
-    .reveal.active { opacity: 1 !important; transform: translateY(0) !important; display: block !important; }
-    #projectsGrid { display: grid !important; }
-    .project-card { display: flex !important; opacity: 1 !important; visibility: visible !important; }
+    .projects-grid { 
+      grid-template-columns: 1fr !important; 
+      gap: 1rem !important;
+    }
+    .project-card {
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: flex !important;
+    }
+    .reveal, .reveal-left, .reveal-right {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
+      transform: translateX(0) !important;
+    }
     .software-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .software-card { max-width: 100%; padding: 1rem 0.5rem; }
     .software-logo-wrapper { width: 60px; height: 60px; }
@@ -1405,9 +1425,21 @@
         }
       }
     });
-  }, { threshold: 0.15 });
+  }, { threshold: 0.1 });
   
   revealElements.forEach(el => revealObserver.observe(el));
+  
+  // Force show projects on mobile
+  if (window.innerWidth <= 480) {
+    const projectsSection = document.querySelector('#projects');
+    if (projectsSection) {
+      projectsSection.classList.add('active');
+    }
+    const projectsGrid = document.getElementById('projectsGrid');
+    if (projectsGrid) {
+      projectsGrid.classList.add('active');
+    }
+  }
   
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
